@@ -34,24 +34,17 @@ A GUI application for exploring and managing PostgreSQL databases. Built with De
   - Maintains filters while sorting
 
 ## Requirements
-
 - OpenGL 3.2+
 - GLFW3
 - PostgreSQL client library (libpq)
 - C++17 compiler
 - CMake 3.10+
-
-## Dependencies
-
-The project uses the following libraries:
 - Dear ImGui (included as git submodule)
-- GLFW3
-- libpq (PostgreSQL)
-- OpenGL
+
+
 
 ## Building from Source
 
-### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/nealmick/DB_Explorer.git
@@ -74,9 +67,9 @@ make
 ## Connection String Format
 
 The application accepts PostgreSQL connection strings in URI format:
-
+```bash
 postgresql://username:password@hostname:port/dbname?sslmode=require
-
+```
 
 ## Platform Support
 
