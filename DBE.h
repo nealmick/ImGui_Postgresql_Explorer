@@ -1,28 +1,30 @@
 // dbe.h
 #pragma once
 
+#include "Table.h"
+#include <imgui.h>
+#include <libpq-fe.h>
 #include <memory>
 #include <string>
 #include <vector>
-#include <imgui.h>
-#include <libpq-fe.h>
-#include "Table.h"
 
-class DBE {
-public:
+class DBE
+{
+  public:
     DBE() = default;
     ~DBE();
 
     // Main interface
-    void render();  // Just renders the DBE content
+    void render();   // Just renders the DBE content
     void shutdown(); // Just database cleanup
 
-private:
+  private:
     // Database connection state
-    struct DatabaseState {
+    struct DatabaseState
+    {
         char connStr[1024] = "";
         bool showPassword = false;
-        PGconn* conn = nullptr;
+        PGconn *conn = nullptr;
         std::vector<std::string> tables;
         std::string selectedTable;
         std::unique_ptr<Table> tableView;
