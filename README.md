@@ -1,9 +1,6 @@
 # Database Explorer
 
 A GUI application for exploring and managing PostgreSQL databases. Built with Dear ImGui and OpenGL, this application provides an intuitive interface for viewing, editing, and analyzing database tables.
-![Screenshot 2025-02-21 at 3 42 26 PM](https://github.com/user-attachments/assets/f7e78337-3baa-475c-9e86-f77c84254ee4)
-
-https://github.com/user-attachments/assets/3b24d806-ca63-4a9b-8640-16edfc8119e8
 
 
 ## Features
@@ -35,6 +32,8 @@ https://github.com/user-attachments/assets/3b24d806-ca63-4a9b-8640-16edfc8119e8
   - Sort by any column
   - Ascending/descending toggle
   - Maintains filters while sorting
+
+https://github.com/user-attachments/assets/3b24d806-ca63-4a9b-8640-16edfc8119e8
 
 ## Requirements
 - OpenGL 3.2+
