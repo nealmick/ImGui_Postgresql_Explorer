@@ -5,14 +5,14 @@ Table::Table(PGconn *conn) : conn(conn) {}
 
 Table::~Table() {}
 
-
 void Table::loadTableData(const std::string &tableName, int offset)
 {
     if (!conn)
         return;
 
     // If the table name is changing, clear columns; otherwise, keep them.
-    if (currentTable != tableName) {
+    if (currentTable != tableName)
+    {
         currentTable = tableName;
         columns.clear();
     }
@@ -21,12 +21,14 @@ void Table::loadTableData(const std::string &tableName, int offset)
 
     std::string dataQuery;
     // If columns are already loaded, we can use our filtered query (which includes sorting).
-    if (!columns.empty()) {
+    if (!columns.empty())
+    {
         dataQuery = buildFilteredQuery();
-    } else {
+    }
+    else
+    {
         // First-time load: we need to fetch columns from the query result.
-        dataQuery = "SELECT * FROM \"" + currentTable + "\" ORDER BY 1 LIMIT " + 
-                    std::to_string(rowsPerPage) + " OFFSET " + std::to_string(offset);
+        dataQuery = "SELECT * FROM \"" + currentTable + "\" ORDER BY 1 LIMIT " + std::to_string(rowsPerPage) + " OFFSET " + std::to_string(offset);
     }
 
     std::cout << "Executing query: " << dataQuery << std::endl;
@@ -40,7 +42,8 @@ void Table::loadTableData(const std::string &tableName, int offset)
     }
 
     // If columns weren't loaded previously, fetch column names.
-    if (columns.empty()) {
+    if (columns.empty())
+    {
         int numDataCols = PQnfields(dataRes);
         for (int i = 0; i < numDataCols; i++)
         {
@@ -80,7 +83,8 @@ void Table::render()
         return;
 
     // Add horizontal scrolling flag
-    ImGuiTableFlags flags = ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Sortable | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_ScrollY | ImGuiTableFlags_ScrollX;
+
+    ImGuiTableFlags flags = ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable | ImGuiTableFlags_Sortable | ImGuiTableFlags_RowBg | ImGuiTableFlags_ScrollY | ImGuiTableFlags_ScrollX;
 
     float tableHeight = ImGui::GetContentRegionAvail().y - 40;
 
@@ -256,8 +260,9 @@ void Table::render()
             break;
         }
     }
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    ImGui::BeginChild("##Pagination", ImVec2(0, 30), true);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    ImGui::BeginChild("##Pagination", ImVec2(0, 30), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
     if (filteringActive)
     {
         // Reset pagination when filtering is active.
@@ -275,49 +280,47 @@ void Table::render()
         }
     }
     else
-		{
-		    if (currentOffset > 0)
-		    {
-		        if (ImGui::Button("Previous"))
-		        {
-		            currentOffset = std::max(0, currentOffset - rowsPerPage);
-		            loadTableData(currentTable, currentOffset);
-		        }
-		        ImGui::SameLine();
-		    }
-		    ImGui::Text("Page %d (rows %d-%d)", (currentOffset / rowsPerPage) + 1,
-		                static_cast<int>(currentOffset + 1),
-		                static_cast<int>(currentOffset + rows.size()));
-		    if (hasMoreRows)
-		    {
-		        ImGui::SameLine();
-		        if (ImGui::Button("Next"))
-		        {
-		            currentOffset += rowsPerPage;
-		            loadTableData(currentTable, currentOffset);
-		        }
-		    }
-		
-		    // Now add a small combo box for sorting next to the pagination controls.
-		    ImGui::SameLine();
-			ImGui::SetNextItemWidth(100); // narrow combo box
-			std::vector<const char*> colNames;
-			for (const auto &col : columns)
-			    colNames.push_back(col.c_str());
-			
-			if (ImGui::Combo("Sort", &sortColumn, colNames.data(), (int)colNames.size()))
-			{
-				std::cout << "New sort column: " << columns[sortColumn] << std::endl;
-			    loadTableData(currentTable, currentOffset);
-			}
-			ImGui::SameLine();
-			if (ImGui::Checkbox("Rev", &sortAscending))
-			{
-			    loadTableData(currentTable, currentOffset);
-			}
-		}
-	ImGui::EndChild();
-	ImGui::PopStyleVar();
+    {
+        if (currentOffset > 0)
+        {
+            if (ImGui::Button("Previous"))
+            {
+                currentOffset = std::max(0, currentOffset - rowsPerPage);
+                loadTableData(currentTable, currentOffset);
+            }
+            ImGui::SameLine();
+        }
+        ImGui::Text("Page %d (rows %d-%d)", (currentOffset / rowsPerPage) + 1, static_cast<int>(currentOffset + 1), static_cast<int>(currentOffset + rows.size()));
+        if (hasMoreRows)
+        {
+            ImGui::SameLine();
+            if (ImGui::Button("Next"))
+            {
+                currentOffset += rowsPerPage;
+                loadTableData(currentTable, currentOffset);
+            }
+        }
+
+        // Now add a small combo box for sorting next to the pagination controls.
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(100); // narrow combo box
+        std::vector<const char *> colNames;
+        for (const auto &col : columns)
+            colNames.push_back(col.c_str());
+
+        if (ImGui::Combo("Sort", &sortColumn, colNames.data(), (int)colNames.size()))
+        {
+            std::cout << "New sort column: " << columns[sortColumn] << std::endl;
+            loadTableData(currentTable, currentOffset);
+        }
+        ImGui::SameLine();
+        if (ImGui::Checkbox("Rev", &sortAscending))
+        {
+            loadTableData(currentTable, currentOffset);
+        }
+    }
+    ImGui::EndChild();
+    ImGui::PopStyleVar();
 }
 
 void Table::handleCellClick(int row, int col)
@@ -451,11 +454,14 @@ bool Table::shouldShowRow(const std::vector<std::string> &row) const
     return true;
 }
 
-std::string Table::buildFilteredQuery() const {
+std::string Table::buildFilteredQuery() const
+{
     std::string query = "SELECT * FROM \"" + currentTable + "\" WHERE 1=1";
 
-    for (size_t i = 0; i < columns.size(); i++) {
-        if (!columnFilters[i].empty()) {
+    for (size_t i = 0; i < columns.size(); i++)
+    {
+        if (!columnFilters[i].empty())
+        {
             query += " AND LOWER(\"" + columns[i] + "\"::text) LIKE LOWER('%" + columnFilters[i] + "%')";
         }
     }
@@ -464,7 +470,6 @@ std::string Table::buildFilteredQuery() const {
     query += " LIMIT " + std::to_string(rowsPerPage) + " OFFSET " + std::to_string(currentOffset);
     return query;
 }
-
 
 void Table::reloadWithFilters()
 {

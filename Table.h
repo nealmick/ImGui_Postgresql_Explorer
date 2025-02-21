@@ -49,10 +49,7 @@ class Table
     std::string buildFilteredQuery() const;
     int activeFilterColumn = -1;
     int lastActiveColumn = -1;
-	
-	int sortColumn = 0;       // default to first column
-	bool sortAscending = true; // default order
 
-
-
+    int sortColumn = 0;        // default to first column
+    bool sortAscending = true; // default order
 };
