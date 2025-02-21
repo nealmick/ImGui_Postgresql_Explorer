@@ -2,6 +2,8 @@
 
 A GUI application for exploring and managing PostgreSQL databases. Built with Dear ImGui and OpenGL, this application provides an intuitive interface for viewing, editing, and analyzing database tables.
 
+https://github.com/user-attachments/assets/3b24d806-ca63-4a9b-8640-16edfc8119e8
+
 
 ## Features
 
