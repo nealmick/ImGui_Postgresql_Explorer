@@ -9,6 +9,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 
+# PostgreSQL
+set(PostgreSQL_INCLUDE_DIRS "/usr/local/opt/libpq/include")
+set(PostgreSQL_LIBRARY_DIRS "/usr/local/opt/libpq/lib")
+
 # ImGui source files
 set(IMGUI_SOURCES
     lib/imgui/imgui.cpp
@@ -23,6 +27,7 @@ set(IMGUI_SOURCES
 # Main executable
 add_executable(db_explorer
     main.cpp
+    Table.cpp
     ${IMGUI_SOURCES}
 )
 
@@ -30,11 +35,13 @@ target_include_directories(db_explorer PRIVATE
     lib/imgui
     lib/imgui/backends
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${PostgreSQL_INCLUDE_DIRS}
 )
 
 target_link_libraries(db_explorer PRIVATE
     OpenGL::GL
     glfw
+    ${PostgreSQL_LIBRARY_DIRS}/libpq.dylib
 )
 
 if(APPLE)
