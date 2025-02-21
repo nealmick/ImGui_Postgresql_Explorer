@@ -1,4 +1,4 @@
-# Database Explorer
+# Postgres Database Explorer
 
 A GUI application for exploring and managing PostgreSQL databases. Built with Dear ImGui and OpenGL, this application provides an intuitive interface for viewing, editing, and analyzing database tables.
 
