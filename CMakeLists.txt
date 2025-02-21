@@ -26,7 +26,8 @@ set(IMGUI_SOURCES
 
 # Main executable
 add_executable(db_explorer
-    main.cpp
+    Main.cpp
+    DBE.cpp        
     Table.cpp
     ${IMGUI_SOURCES}
 )
