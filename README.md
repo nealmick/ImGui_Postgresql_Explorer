@@ -49,8 +49,8 @@ https://github.com/user-attachments/assets/3b24d806-ca63-4a9b-8640-16edfc8119e8
 
 
 ```bash
-git clone https://github.com/nealmick/DB_Explorer.git
-cd DB_Explorer
+git clone https://github.com/nealmick/ImGui_Postgresql_Explorer
+cd ImGui_Postgresql_Explorer
 git submodule init
 git submodule update
 
